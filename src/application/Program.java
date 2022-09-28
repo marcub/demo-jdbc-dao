@@ -13,8 +13,6 @@ public class Program {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        Seller seller = new Seller(1, "Carla", "carla@gmail.com", new Date(), 1450.0, new Department(2, null));
-
-        sellerDao.update(seller);
+        sellerDao.deleteById(17);
     }
 }
