@@ -12,7 +12,7 @@ public class Program {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
-        List<Seller> sellersFiltered = sellerDao.findByDepartment(new Department(2, null));
+        List<Seller> sellersFiltered = sellerDao.findAll();
 
         sellersFiltered.forEach(System.out::println);
     }
