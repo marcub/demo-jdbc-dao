@@ -15,8 +15,6 @@ public class Program {
 
         Seller seller = new Seller(1, "Carla", "carla@gmail.com", new Date(), 1450.0, new Department(2, null));
 
-        sellerDao.insert(seller);
-
-        System.out.println(seller.getId());
+        sellerDao.update(seller);
     }
 }
