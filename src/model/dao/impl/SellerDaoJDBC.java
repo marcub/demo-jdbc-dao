@@ -21,7 +21,41 @@ public class SellerDaoJDBC implements SellerDao {
     }
     @Override
     public void insert(Seller seller) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("" +
+                    "INSERT INTO seller " +
+                    "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+                    "VALUES " +
+                    "(?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
 
+            preparedStatement.setString(1, seller.getName());
+            preparedStatement.setString(2, seller.getEmail());
+            preparedStatement.setDate(3, new Date(seller.getBirthDate().getTime()));
+            preparedStatement.setDouble(4, seller.getBaseSalary());
+            preparedStatement.setInt(5, seller.getDepartment().getId());
+
+            int sellersInserted = preparedStatement.executeUpdate();
+
+            if(sellersInserted > 0) {
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    int sellerInsertedId = resultSet.getInt(1);
+                    seller.setId(sellerInsertedId);
+                }
+                DB.closeResultSet(resultSet);
+            }
+            else {
+                throw new DbException("Unexpected error! No sellers inserted.");
+            }
+        }
+        catch(SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(preparedStatement);
+        }
     }
 
     @Override
